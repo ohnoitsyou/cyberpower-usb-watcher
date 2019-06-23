@@ -20,7 +20,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 def catch():
     output = ""
     VENDOR_ID = 0x0764
-    PRODUCT_ID = 0x0601
+    PRODUCT_ID = 0x0501
     device_list = hid.enumerate(VENDOR_ID, PRODUCT_ID)
     for device_item in device_list:
         device = hid.Device(path=device_item['path'])
@@ -31,7 +31,7 @@ def catch():
             if value in [True,False]:
                 value = int(value == True)
             if isinstance(value, int):
-                output += "ups_{}{{firmware=\"{}\"}} {}\n".format(key, firmware, value)
+                output += "ups_{} {}\n".format(key, value)
         device.close()
     return output.encode("ascii")
 
@@ -43,7 +43,7 @@ class CatchHandler(BaseHTTPRequestHandler):
             self.wfile.write(catch())
 
 def run(server_class=HTTPServer, handler_class=CatchHandler):
-    server_address = ('127.0.0.1', 9500)
+    server_address = ('0.0.0.0', 9500)
     httpd = server_class(server_address, handler_class)
     httpd.serve_forever()
 
