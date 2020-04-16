@@ -1,0 +1,11 @@
+[Unit]
+Description=Cyberpower prometheus endpoint
+After=network.target
+
+[Service]
+ExecStart=/opt/cyberpower-usb-watcher/venv/bin/python /opt/cyberpower-usb-watcher/server.py
+Restart=on-failure
+RestartPreventExitStatus=255
+
+[Install]
+WantedBy=multi-user.target
